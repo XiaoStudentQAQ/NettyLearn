@@ -16,6 +16,8 @@ public class TestFileChannelTransferTo {
             // left 变量代表还剩余多少字节
             for (long left = size; left > 0; ) {
                 System.out.println("position:" + (size - left) + " left:" + left);
+                // 实际传输的字节数，可能为零
+                long l = from.transferTo((size - left), left, to);
                 left -= from.transferTo((size - left), left, to);
             }
         } catch (IOException e) {
