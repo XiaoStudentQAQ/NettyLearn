@@ -15,7 +15,9 @@ public class Server {
     public static void main(String[] args) throws IOException {
         // 1. 创建 selector, 管理多个 channel
         Selector selector = Selector.open();
+        // 创建服务器对象
         ServerSocketChannel ssc = ServerSocketChannel.open();
+        // 默认是true，阻塞，这里切换为非阻塞模式
         ssc.configureBlocking(false);
         // 2. 建立 selector 和 channel 的联系（注册）
         // SelectionKey 就是将来事件发生后，通过它可以知道事件和哪个channel的事件
@@ -23,6 +25,7 @@ public class Server {
         // key 只关注 accept 事件
         sscKey.interestOps(SelectionKey.OP_ACCEPT);
         log.debug("sscKey:{}", sscKey);
+        // 绑定端口
         ssc.bind(new InetSocketAddress(8080));
         while (true) {
             // 3. select 方法, 没有事件发生，线程阻塞，有事件，线程才会恢复运行
