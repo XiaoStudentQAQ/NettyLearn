@@ -10,15 +10,20 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.logging.LoggingHandler;
 
+/**
+ * 服务器端
+ */
 public class HelloServer {
     public static void main(String[] args) {
         // 1. 启动器，负责组装 netty 组件，启动服务器
         new ServerBootstrap()
             // 2. BossEventLoop, WorkerEventLoop(selector,thread), group 组
+            // 回顾多线程nio，自定义的BossEventLoop, WorkerEventLoop利用多核CPU，BossEventLoop去处理selector连接
+            // WorkerEventLoop去处理读写事件
             .group(new NioEventLoopGroup())
-            // 3. 选择 服务器的 ServerSocketChannel 实现
+            // 3. 选择 服务器的 ServerSocketChannel 实现，因为支持好几种io的实现
             .channel(NioServerSocketChannel.class) // OIO BIO
-            // 4. boss 负责处理连接 worker(child) 负责处理读写，决定了 worker(child) 能执行哪些操作（handler）
+            // 4. boss 负责处理连接，   worker(child) 负责处理读写，决定了 worker(child) 能执行哪些操作（handler）
             .childHandler(
                     // 5. channel 代表和客户端进行数据读写的通道 Initializer 初始化，负责添加别的 handler
                 new ChannelInitializer<NioSocketChannel>() {

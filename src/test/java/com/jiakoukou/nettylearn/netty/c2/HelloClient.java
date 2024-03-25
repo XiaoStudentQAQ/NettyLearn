@@ -8,6 +8,9 @@ import io.netty.handler.codec.string.StringEncoder;
 
 import java.net.InetSocketAddress;
 
+/**
+ * 客户端
+ */
 public class HelloClient {
     public static void main(String[] args) throws InterruptedException {
         // 1. 启动类
