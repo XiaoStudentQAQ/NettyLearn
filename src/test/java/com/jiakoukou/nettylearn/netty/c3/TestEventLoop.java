@@ -11,6 +11,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class TestEventLoop {
     public static void main(String[] args) {
+         // 输出当前电脑的核心数
+        System.out.println(NettyRuntime.availableProcessors());
+
         // 1. 创建事件循环组
         EventLoopGroup group = new NioEventLoopGroup(2); // io 事件，普通任务，定时任务
 //        EventLoopGroup group = new DefaultEventLoopGroup(); // 普通任务，定时任务
@@ -20,6 +23,12 @@ public class TestEventLoop {
         System.out.println(group.next());
         System.out.println(group.next());
 
+        //在线程池中， execute()  方法用于提交不需要返回值的任务，
+        // 而  submit()  方法用于提交需要返回值的任务。
+        // submit()  方法可以返回一个  Future  对象，
+        // 通过这个对象可以获取任务执行的结果或者取消任务的执行。
+        // 因此，主要区别在于 submit()  方法可以处理有返回值的任务，
+        // 并提供更多的控制选项。
         // 3. 执行普通任务
         /*group.next().execute(() -> {
             try {
