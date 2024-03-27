@@ -47,6 +47,7 @@ public class TestPipeline {
 //                                ch.writeAndFlush(ctx.alloc().buffer().writeBytes("server...".getBytes()));
                             }
                         });
+                        // 出栈处理器只有向channel里面写入了数据才会触发，且从尾往前
                         pipeline.addLast("h4", new ChannelOutboundHandlerAdapter(){
                             @Override
                             public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
