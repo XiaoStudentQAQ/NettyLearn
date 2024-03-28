@@ -28,7 +28,9 @@ public class TestPipeline {
                             @Override
                             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
                                 log.debug("1");
-                                super.channelRead(ctx, msg);
+                                ByteBuf buf = (ByteBuf) msg;
+                                String s = buf.toString(Charset.defaultCharset());
+                                super.channelRead(ctx, s);
                             }
                         });
                         pipeline.addLast("h2", new ChannelInboundHandlerAdapter(){
@@ -43,8 +45,9 @@ public class TestPipeline {
                             @Override
                             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
                                 log.debug("3");
-                                ctx.writeAndFlush(ctx.alloc().buffer().writeBytes("server...".getBytes()));
-//                                ch.writeAndFlush(ctx.alloc().buffer().writeBytes("server...".getBytes()));
+                                // ch和ctx的区别，ch从末尾开始找出栈处理器，ctx从当前位置开始向前找出栈处理器
+//                                ctx.writeAndFlush(ctx.alloc().buffer().writeBytes("server...".getBytes()));
+                                ch.writeAndFlush(ctx.alloc().buffer().writeBytes("server...".getBytes()));
                             }
                         });
                         // 出栈处理器只有向channel里面写入了数据才会触发，且从尾往前
