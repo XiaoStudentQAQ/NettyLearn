@@ -9,6 +9,7 @@ import static io.netty.util.internal.StringUtil.NEWLINE;
 public class TestByteBuf {
     public static void main(String[] args) {
 
+        // 与jdk的ByteBuffer不同，netty中的能动态扩容
         ByteBuf buf = ByteBufAllocator.DEFAULT.buffer();
         System.out.println(buf.getClass());
         System.out.println(buf.maxCapacity());

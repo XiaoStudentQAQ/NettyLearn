@@ -15,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.Charset;
 
+/**
+ * EmbeddedChannel模拟出栈入栈操作
+ */
 @Slf4j
 public class TestEmbeddedChannel {
     public static void main(String[] args) {
