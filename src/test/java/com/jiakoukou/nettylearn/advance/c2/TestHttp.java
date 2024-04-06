@@ -18,6 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_LENGTH;
 
+/**
+ * 测试http netty自身已经实现好了http协议
+ */
 @Slf4j
 public class TestHttp {
     public static void main(String[] args) {
@@ -31,6 +34,7 @@ public class TestHttp {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ch.pipeline().addLast(new LoggingHandler(LogLevel.DEBUG));
+                    // 添加http编解码器
                     ch.pipeline().addLast(new HttpServerCodec());
                     ch.pipeline().addLast(new SimpleChannelInboundHandler<HttpRequest>() {
                         @Override
@@ -44,6 +48,7 @@ public class TestHttp {
 
                             byte[] bytes = "<h1>Hello, world!</h1>".getBytes();
 
+                            // 请求头里面告诉响应的长度，避免浏览器一直等待
                             response.headers().setInt(CONTENT_LENGTH, bytes.length);
                             response.content().writeBytes(bytes);
 
