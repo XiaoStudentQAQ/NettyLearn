@@ -5,6 +5,9 @@ import io.netty.buffer.ByteBufAllocator;
 
 import static com.jiakoukou.nettylearn.netty.c4.TestByteBuf.log;
 
+/**
+ * 切片测试
+ */
 public class TestSlice {
     public static void main(String[] args) {
         ByteBuf buf = ByteBufAllocator.DEFAULT.buffer(10);
@@ -13,6 +16,7 @@ public class TestSlice {
 
         // 在切片过程中，没有发生数据复制
         ByteBuf f1 = buf.slice(0, 5);
+        // 引用计数+1
         f1.retain();
         // 'a','b','c','d','e', 'x'
         ByteBuf f2 = buf.slice(5, 5);
