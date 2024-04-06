@@ -14,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.Charset;
 
+/**
+ * 模拟向redis发送数据
+ */
 @Slf4j
 public class TestRedis {
     /*
@@ -27,6 +30,7 @@ public class TestRedis {
     zhangsan
      */
     public static void main(String[] args) {
+        // LINE换行符
         final byte[] LINE = {13, 10};
         NioEventLoopGroup worker = new NioEventLoopGroup();
         try {
@@ -66,7 +70,7 @@ public class TestRedis {
                     });
                 }
             });
-            ChannelFuture channelFuture = bootstrap.connect("localhost", 6379).sync();
+            ChannelFuture channelFuture = bootstrap.connect("192.168.179.136", 6379).sync();
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             log.error("client error", e);
