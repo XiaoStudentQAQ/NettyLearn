@@ -13,8 +13,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
+/**
+ * ByteToMessageCodec的子类不能被标记为@Sharable
+ */
 @Slf4j
-@ChannelHandler.Sharable
+//@ChannelHandler.Sharable
 public class MessageCodec extends ByteToMessageCodec<Message> {
 
     /**

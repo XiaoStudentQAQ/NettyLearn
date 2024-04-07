@@ -1,6 +1,6 @@
 package com.jiakoukou.nettylearn.protocol;
 
-import cn.itcast.message.Message;
+import com.jiakoukou.nettylearn.message.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -13,6 +13,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
+/**
+ * 为什么可以确定自定义的MessageCodecSharable一定是Sharable？
+ * 因为我们在使用MessageCodecSharable时，使用了粘包半包的处理器LengthFieldBasedFrameDecoder，
+ * 能够保证一定能将完整的bytebuffer传递过来，就不用考虑安全问题了
+ */
 @Slf4j
 @ChannelHandler.Sharable
 /**
