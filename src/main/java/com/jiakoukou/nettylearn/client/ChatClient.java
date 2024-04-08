@@ -1,5 +1,6 @@
 package com.jiakoukou.nettylearn.client;
 
+import com.jiakoukou.nettylearn.message.LoginRequestMessage;
 import com.jiakoukou.nettylearn.protocol.MessageCodecSharable;
 import com.jiakoukou.nettylearn.protocol.ProcotolFrameDecoder;
 import io.netty.bootstrap.Bootstrap;
@@ -13,6 +14,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * 客户端
@@ -37,10 +41,34 @@ public class ChatClient {
                     // 编解码器
                     ch.pipeline().addLast(MESSAGE_CODEC);
                     ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
+                        // 接收相应信息
+                        @Override
+                        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+                            super.channelRead(ctx, msg);
+                        }
+
                         // 连接建立事件
                         @Override
                         public void channelActive(ChannelHandlerContext ctx) throws Exception {
-                            // 连接建立后触发
+                            // 负责接收用户在控制台的输入，负责向服务器发送各种信息
+                            new Thread(() -> {
+                                Scanner scanner = new Scanner(System.in);
+                                System.out.println("请输入用户名：");
+                                String userName = scanner.nextLine();
+                                System.out.println("请输入密码：");
+                                String password = scanner.nextLine();
+                                // 构造消息对象
+                                LoginRequestMessage message = new LoginRequestMessage(userName, password, null);
+                                // 发送消息
+                                ctx.writeAndFlush(message);
+
+                                System.out.println("等待输入。。。");
+                                try {
+                                    System.in.read();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }, "system in").start();
                             super.channelActive(ctx);
                         }
                     });
