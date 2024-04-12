@@ -1,9 +1,9 @@
 package com.jiakoukou.nettylearn.handler;
 
 
-import com.wjy.netty.message.GroupMembersRequestMessage;
-import com.wjy.netty.message.GroupMembersResponseMessage;
-import com.wjy.netty.server.session.GroupSessionFactory;
+import com.jiakoukou.nettylearn.message.GroupMembersRequestMessage;
+import com.jiakoukou.nettylearn.message.GroupMembersResponseMessage;
+import com.jiakoukou.nettylearn.server.session.GroupSessionFactory;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
