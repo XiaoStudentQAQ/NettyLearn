@@ -1,5 +1,6 @@
 package com.jiakoukou.nettylearn.protocol;
 
+import com.jiakoukou.nettylearn.config.Config;
 import com.jiakoukou.nettylearn.message.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
@@ -32,7 +33,7 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         // 2. 1 字节的版本,
         out.writeByte(1);
         // 3. 1 字节的序列化方式 jdk 0 , json 1
-        out.writeByte(0);
+        out.writeByte(Config.getSerializerAlgorithm().ordinal());
         // 4. 1 字节的指令类型
         out.writeByte(msg.getMessageType());
         // 5. 4 个字节
@@ -52,15 +53,20 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         int magicNum = in.readInt();
         byte version = in.readByte();
+        // 序列化算法
         byte serializerType = in.readByte();
         byte messageType = in.readByte();
         int sequenceId = in.readInt();
         in.readByte();
         int length = in.readInt();
         byte[] bytes = new byte[length];
-        Message message = Serializer.Algorithm.Java.deserialize(Message.class, bytes);
+        // 找到序列化算法
+        Serializer.Algorithm algorithm = Serializer.Algorithm.values()[serializerType];
+        // 找到具体的消息类型
+        Class<?> messageClass = Message.getMessageClass(messageType);
+        Object deserialize = Serializer.Algorithm.values()[serializerType].deserialize(messageClass, bytes);
         log.debug("{}, {}, {}, {}, {}, {}", magicNum, version, serializerType, messageType, sequenceId, length);
-        log.debug("{}", message);
-        out.add(message);
+        log.debug("{}", deserialize);
+        out.add(deserialize);
     }
 }
