@@ -2,7 +2,7 @@ package com.jiakoukou.nettylearn.client;
 
 import com.jiakoukou.nettylearn.message.*;
 import com.jiakoukou.nettylearn.protocol.MessageCodecSharable;
-import com.jiakoukou.nettylearn.protocol.ProcotolFrameDecoder;
+import com.jiakoukou.nettylearn.protocol.ProtocolFrameDecoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -45,7 +45,7 @@ public class ChatClient {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     // 半包处理器
-                    ch.pipeline().addLast(new ProcotolFrameDecoder());
+                    ch.pipeline().addLast(new ProtocolFrameDecoder());
                     // 日志处理器
                     ch.pipeline().addLast(LOGGING_HANDLER);
                     // 编解码器

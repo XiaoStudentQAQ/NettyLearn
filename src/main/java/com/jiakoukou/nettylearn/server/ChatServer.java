@@ -2,7 +2,7 @@ package com.jiakoukou.nettylearn.server;
 
 import com.jiakoukou.nettylearn.handler.*;
 import com.jiakoukou.nettylearn.protocol.MessageCodecSharable;
-import com.jiakoukou.nettylearn.protocol.ProcotolFrameDecoder;
+import com.jiakoukou.nettylearn.protocol.ProtocolFrameDecoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
@@ -45,7 +45,7 @@ public class ChatServer {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     // 处理沾包
-                    ch.pipeline().addLast(new ProcotolFrameDecoder());
+                    ch.pipeline().addLast(new ProtocolFrameDecoder());
                     ch.pipeline().addLast(LOGGING_HANDLER);
                     ch.pipeline().addLast(MESSAGE_CODEC);
                     // 用来判断是不是 读空闲时间过长，或 写空闲时间过长

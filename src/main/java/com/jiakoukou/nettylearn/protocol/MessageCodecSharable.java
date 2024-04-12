@@ -63,10 +63,10 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         // 找到序列化算法
         Serializer.Algorithm algorithm = Serializer.Algorithm.values()[serializerType];
         // 找到具体的消息类型
-        Class<?> messageClass = Message.getMessageClass(messageType);
-        Object deserialize = Serializer.Algorithm.values()[serializerType].deserialize(messageClass, bytes);
+        Class<? extends Message> messageClass = Message.getMessageClass(messageType);
+        Message message = algorithm.deserialize(messageClass, bytes);
         log.debug("{}, {}, {}, {}, {}, {}", magicNum, version, serializerType, messageType, sequenceId, length);
-        log.debug("{}", deserialize);
-        out.add(deserialize);
+        log.debug("{}", message);
+        out.add(message);
     }
 }
