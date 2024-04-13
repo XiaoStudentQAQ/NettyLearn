@@ -32,9 +32,10 @@ public class RpcClientManager {
 
     // 创建代理类
     public static <T> T getProxyService(Class<T> serviceClass) {
+        // 例如，这里只要传入了任何类的类型，就会返回一个对应的实现类
         ClassLoader loader = serviceClass.getClassLoader();
         Class<?>[] interfaces = new Class[]{serviceClass};
-        //                                                            sayHello  "张三"
+        // sayHello  "张三"
         Object o = Proxy.newProxyInstance(loader, interfaces, (proxy, method, args) -> {
             // 1. 将方法调用转换为 消息对象
             int sequenceId = SequenceIdGenerator.nextId();
